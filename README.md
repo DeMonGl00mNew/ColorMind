@@ -10,7 +10,11 @@
 
 colorMind.pptx - презентация проекта
 
+/color_executable/
+
 https://youtu.be/7h9VqEbrxBA - видеодемонстрация
+
+/color_executable/ - папка с исполнительной сборкой
 
 Assets/Scripts/ - папка со скриптами
 
