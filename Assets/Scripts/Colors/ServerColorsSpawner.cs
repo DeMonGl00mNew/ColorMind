@@ -4,22 +4,22 @@ using Unity.Netcode;
 
 public class ServerColorsSpawner : NetworkBehaviour
 {
-    // Список точек спауна
+    // РЎРїРёСЃРѕРє С‚РѕС‡РµРє СЃРїР°СѓРЅР°
     public List<GameObject> m_SpawnPoints;
 
-    // Частота спауна в секундах
+    // Р§Р°СЃС‚РѕС‚Р° СЃРїР°СѓРЅР° РІ СЃРµРєСѓРЅРґР°С…
     public float SpawnRatePerSecond;
 
-    // Префаб объекта, который будет спауниться
+    // РџСЂРµС„Р°Р± РѕР±СЉРµРєС‚Р°, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ СЃРїР°СѓРЅРёС‚СЊСЃСЏ
     public GameObject m_IngredientPrefab;
 
     private float m_LastSpawnTime;
 
-    // Вызывается при спауне объекта на сети
+    // Р’С‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё СЃРїР°СѓРЅРµ РѕР±СЉРµРєС‚Р° РЅР° СЃРµС‚Рё
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        // Если не сервер, отключаем скрипт
+        // Р•СЃР»Рё РЅРµ СЃРµСЂРІРµСЂ, РѕС‚РєР»СЋС‡Р°РµРј СЃРєСЂРёРїС‚
         if (!IsServer)
         {
             enabled = false;
@@ -27,30 +27,30 @@ public class ServerColorsSpawner : NetworkBehaviour
         }
     }
 
-    // Вызывается на каждом кадре
+    // Р’С‹Р·С‹РІР°РµС‚СЃСЏ РЅР° РєР°Р¶РґРѕРј РєР°РґСЂРµ
     private void FixedUpdate()
     {
-        // Если нет NetworkManager или не сервер, выходим
+        // Р•СЃР»Рё РЅРµС‚ NetworkManager РёР»Рё РЅРµ СЃРµСЂРІРµСЂ, РІС‹С…РѕРґРёРј
         if (NetworkManager != null && !IsServer) return;
 
-        // Проверяем прошло ли достаточно времени для спауна
+        // РџСЂРѕРІРµСЂСЏРµРј РїСЂРѕС€Р»Рѕ Р»Рё РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РІСЂРµРјРµРЅРё РґР»СЏ СЃРїР°СѓРЅР°
         if (Time.time - m_LastSpawnTime > SpawnRatePerSecond)
         {
-            // Проходим по всем точкам спауна
+            // РџСЂРѕС…РѕРґРёРј РїРѕ РІСЃРµРј С‚РѕС‡РєР°Рј СЃРїР°СѓРЅР°
             foreach (var spawnPoint in m_SpawnPoints)
             {
-                // Создаем новый объект из префаба на позиции и с ориентацией точки спауна
+                // РЎРѕР·РґР°РµРј РЅРѕРІС‹Р№ РѕР±СЉРµРєС‚ РёР· РїСЂРµС„Р°Р±Р° РЅР° РїРѕР·РёС†РёРё Рё СЃ РѕСЂРёРµРЅС‚Р°С†РёРµР№ С‚РѕС‡РєРё СЃРїР°СѓРЅР°
                 var newIngredientObject = Instantiate(m_IngredientPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
-                // Устанавливаем позицию объекта
+                // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РїРѕР·РёС†РёСЋ РѕР±СЉРµРєС‚Р°
                 newIngredientObject.transform.position = spawnPoint.transform.position;
-                // Получаем компонент ServerColors у нового объекта
+                // РџРѕР»СѓС‡Р°РµРј РєРѕРјРїРѕРЅРµРЅС‚ ServerColors Сѓ РЅРѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р°
                 var ingredient = newIngredientObject.GetComponent<ServerColors>();
-                // Устанавливаем случайный тип ингредиента
+                // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃР»СѓС‡Р°Р№РЅС‹Р№ С‚РёРї РёРЅРіСЂРµРґРёРµРЅС‚Р°
                 ingredient.CurrentIngredientType.Value = (IngredientType)Random.Range(0, 7);
-                // Спауним объект на сети
+                // РЎРїР°СѓРЅРёРј РѕР±СЉРµРєС‚ РЅР° СЃРµС‚Рё
                 ingredient.NetworkObject.Spawn();
             }
-            // Обновляем время последнего спауна
+            // РћР±РЅРѕРІР»СЏРµРј РІСЂРµРјСЏ РїРѕСЃР»РµРґРЅРµРіРѕ СЃРїР°СѓРЅР°
             m_LastSpawnTime = Time.time;
         }
     }

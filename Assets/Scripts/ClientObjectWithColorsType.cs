@@ -3,14 +3,14 @@ using Unity.Netcode;
 
 public class ClientObjectWithColorsType : NetworkBehaviour
 {
-    // Ссылка на серверный объект с типом ингредиента
+    // РЎСЃС‹Р»РєР° РЅР° СЃРµСЂРІРµСЂРЅС‹Р№ РѕР±СЉРµРєС‚ СЃ С‚РёРїРѕРј РёРЅРіСЂРµРґРёРµРЅС‚Р°
     private ServerObjectWithIngredientType m_Server;
-    // Ссылка на компонент Renderer
+    // РЎСЃС‹Р»РєР° РЅР° РєРѕРјРїРѕРЅРµРЅС‚ Renderer
     private Renderer m_Renderer;
 
     private void Awake()
     {
-        // Получаем ссылки на компоненты при инициализации
+        // РџРѕР»СѓС‡Р°РµРј СЃСЃС‹Р»РєРё РЅР° РєРѕРјРїРѕРЅРµРЅС‚С‹ РїСЂРё РёРЅРёС†РёР°Р»РёР·Р°С†РёРё
         m_Server = GetComponent<ServerObjectWithIngredientType>();
         m_Renderer = GetComponent<Renderer>();
     }
@@ -18,11 +18,11 @@ public class ClientObjectWithColorsType : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        // Включаем объект только на клиенте
+        // Р’РєР»СЋС‡Р°РµРј РѕР±СЉРµРєС‚ С‚РѕР»СЊРєРѕ РЅР° РєР»РёРµРЅС‚Рµ
         enabled = IsClient;
     }
 
-    // Метод для обновления материала объекта в зависимости от типа ингредиента
+    // РњРµС‚РѕРґ РґР»СЏ РѕР±РЅРѕРІР»РµРЅРёСЏ РјР°С‚РµСЂРёР°Р»Р° РѕР±СЉРµРєС‚Р° РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РёРїР° РёРЅРіСЂРµРґРёРµРЅС‚Р°
     void UpdateMaterial()
     {
         switch (m_Server.CurrentIngredientType.Value)
@@ -50,7 +50,7 @@ public class ClientObjectWithColorsType : NetworkBehaviour
 
     public void Update()
     {
-        // Вызываем метод обновления материала каждый кадр
+        // Р’С‹Р·С‹РІР°РµРј РјРµС‚РѕРґ РѕР±РЅРѕРІР»РµРЅРёСЏ РјР°С‚РµСЂРёР°Р»Р° РєР°Р¶РґС‹Р№ РєР°РґСЂ
         UpdateMaterial();
     }
 }

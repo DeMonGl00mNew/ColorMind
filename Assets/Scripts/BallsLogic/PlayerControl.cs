@@ -3,19 +3,19 @@ using Unity.Netcode;
 
 public class PlayerControl : NetworkBehaviour
 {
-    public float speed = 10.0f; // Скорость движения игрока
-    public float rotationSpeed = 100.0f; // Скорость поворота игрока
-    private float moveRot, moveForward; // Переменные для хранения значений вращения и движения
+    public float speed = 10.0f; // РЎРєРѕСЂРѕСЃС‚СЊ РґРІРёР¶РµРЅРёСЏ РёРіСЂРѕРєР°
+    public float rotationSpeed = 100.0f; // РЎРєРѕСЂРѕСЃС‚СЊ РїРѕРІРѕСЂРѕС‚Р° РёРіСЂРѕРєР°
+    private float moveRot, moveForward; // РџРµСЂРµРјРµРЅРЅС‹Рµ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ Р·РЅР°С‡РµРЅРёР№ РІСЂР°С‰РµРЅРёСЏ Рё РґРІРёР¶РµРЅРёСЏ
 
     private void Update()
     {
         if (IsClient && IsOwner)
         {
-            moveForward = Input.GetAxis("Vertical") * Time.deltaTime; // Получаем значение вперед/назад
-            moveRot = Input.GetAxis("Horizontal") * Time.deltaTime; // Получаем значение влево/вправо
+            moveForward = Input.GetAxis("Vertical") * Time.deltaTime; // РџРѕР»СѓС‡Р°РµРј Р·РЅР°С‡РµРЅРёРµ РІРїРµСЂРµРґ/РЅР°Р·Р°Рґ
+            moveRot = Input.GetAxis("Horizontal") * Time.deltaTime; // РџРѕР»СѓС‡Р°РµРј Р·РЅР°С‡РµРЅРёРµ РІР»РµРІРѕ/РІРїСЂР°РІРѕ
 
-            transform.Translate(0, 0, moveForward * speed); // Двигаем игрока вперед/назад
-            transform.Rotate(0, moveRot * rotationSpeed, 0); // Поворачиваем игрока
+            transform.Translate(0, 0, moveForward * speed); // Р”РІРёРіР°РµРј РёРіСЂРѕРєР° РІРїРµСЂРµРґ/РЅР°Р·Р°Рґ
+            transform.Rotate(0, moveRot * rotationSpeed, 0); // РџРѕРІРѕСЂР°С‡РёРІР°РµРј РёРіСЂРѕРєР°
         }
     }
 }

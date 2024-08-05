@@ -7,54 +7,54 @@ public class PaintingObject : ServerObjectWithIngredientType
     private Component[] childComponents;
 
 
-    // Метод вызывается при появлении объекта в сети
+    // РњРµС‚РѕРґ РІС‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё РїРѕСЏРІР»РµРЅРёРё РѕР±СЉРµРєС‚Р° РІ СЃРµС‚Рё
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        // Если не клиент, выходим из метода
+        // Р•СЃР»Рё РЅРµ РєР»РёРµРЅС‚, РІС‹С…РѕРґРёРј РёР· РјРµС‚РѕРґР°
         if (!IsClient)
         {
             return;
         }
-        // Получаем компоненты ServerColors у дочерних объектов
+        // РџРѕР»СѓС‡Р°РµРј РєРѕРјРїРѕРЅРµРЅС‚С‹ ServerColors Сѓ РґРѕС‡РµСЂРЅРёС… РѕР±СЉРµРєС‚РѕРІ
         childComponents = GetComponentsInChildren<ServerColors>();
     }
 
-    // Метод вызывается при столкновении с другим коллайдером
+    // РњРµС‚РѕРґ РІС‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё СЃС‚РѕР»РєРЅРѕРІРµРЅРёРё СЃ РґСЂСѓРіРёРј РєРѕР»Р»Р°Р№РґРµСЂРѕРј
     private void OnTriggerEnter(Collider other)
     {
-        // Если не сервер, выходим из метода
+        // Р•СЃР»Рё РЅРµ СЃРµСЂРІРµСЂ, РІС‹С…РѕРґРёРј РёР· РјРµС‚РѕРґР°
         if (!IsServer) return;
-        // Получаем компоненты ServerColors у дочерних объектов
+        // РџРѕР»СѓС‡Р°РµРј РєРѕРјРїРѕРЅРµРЅС‚С‹ ServerColors Сѓ РґРѕС‡РµСЂРЅРёС… РѕР±СЉРµРєС‚РѕРІ
         childComponents = GetComponentsInChildren<ServerColors>();
-        // Получаем компонент ServerColors у другого объекта
+        // РџРѕР»СѓС‡Р°РµРј РєРѕРјРїРѕРЅРµРЅС‚ ServerColors Сѓ РґСЂСѓРіРѕРіРѕ РѕР±СЉРµРєС‚Р°
         var ingredient = other.gameObject.GetComponent<ServerColors>();
 
-        // Если компонент отсутствует или массив дочерних компонентов пуст, выходим из метода
+        // Р•СЃР»Рё РєРѕРјРїРѕРЅРµРЅС‚ РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РёР»Рё РјР°СЃСЃРёРІ РґРѕС‡РµСЂРЅРёС… РєРѕРјРїРѕРЅРµРЅС‚РѕРІ РїСѓСЃС‚, РІС‹С…РѕРґРёРј РёР· РјРµС‚РѕРґР°
         if (ingredient == null || childComponents.Length == 0)
         {
             return;
         }
 
-        // Перебираем все дочерние компоненты
+        // РџРµСЂРµР±РёСЂР°РµРј РІСЃРµ РґРѕС‡РµСЂРЅРёРµ РєРѕРјРїРѕРЅРµРЅС‚С‹
         foreach (ServerColors component in childComponents)
         {
-            // Если тип ингредиента совпадает
+            // Р•СЃР»Рё С‚РёРї РёРЅРіСЂРµРґРёРµРЅС‚Р° СЃРѕРІРїР°РґР°РµС‚
             if (component.CurrentIngredientType.Value == ingredient.CurrentIngredientType.Value)
             {
-                // Вызываем метод RenderColorObjectClientRpc для изменения цвета
+                // Р’С‹Р·С‹РІР°РµРј РјРµС‚РѕРґ RenderColorObjectClientRpc РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ С†РІРµС‚Р°
                 RenderColorObjectClientRpc((int)component.gameObject.transform.GetSiblingIndex(),
                                            (int)component.CurrentIngredientType.Value);
 
-                // Уменьшаем счетчик объектов для рисования
+                // РЈРјРµРЅСЊС€Р°РµРј СЃС‡РµС‚С‡РёРє РѕР±СЉРµРєС‚РѕРІ РґР»СЏ СЂРёСЃРѕРІР°РЅРёСЏ
                 teamObjects.CountPainting.Value -= 1;
-                // Если владелец объекта, обновляем счет команды
+                // Р•СЃР»Рё РІР»Р°РґРµР»РµС† РѕР±СЉРµРєС‚Р°, РѕР±РЅРѕРІР»СЏРµРј СЃС‡РµС‚ РєРѕРјР°РЅРґС‹
                 if (IsOwner)
                 {
                     teamObjects.RefreshScoreClientRpc();
                 }
 
-                // Устанавливаем новый тип ингредиента и уничтожаем другой объект
+                // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РЅРѕРІС‹Р№ С‚РёРї РёРЅРіСЂРµРґРёРµРЅС‚Р° Рё СѓРЅРёС‡С‚РѕР¶Р°РµРј РґСЂСѓРіРѕР№ РѕР±СЉРµРєС‚
                 component.CurrentIngredientType.Value = IngredientType.max;
                 ingredient.NetworkObject.Despawn(destroy: true);
                 return;
@@ -62,7 +62,7 @@ public class PaintingObject : ServerObjectWithIngredientType
         }
     }
 
-    // RPC-метод для изменения цвета объекта
+    // RPC-РјРµС‚РѕРґ РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ С†РІРµС‚Р° РѕР±СЉРµРєС‚Р°
     [ClientRpc]
     private void RenderColorObjectClientRpc(int index, int colorIndex)
     {

@@ -5,25 +5,25 @@ using TMPro;
 
 public class ButtonManager : MonoBehaviour
 {
-    public UnityTransport transport; // Объявление переменной для сетевого транспорта
-    public TMP_InputField ServerInput; // Поле ввода для адреса сервера
-    public TMP_InputField PortInput; // Поле ввода для порта
+    public UnityTransport transport; // РћР±СЉСЏРІР»РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ РґР»СЏ СЃРµС‚РµРІРѕРіРѕ С‚СЂР°РЅСЃРїРѕСЂС‚Р°
+    public TMP_InputField ServerInput; // РџРѕР»Рµ РІРІРѕРґР° РґР»СЏ Р°РґСЂРµСЃР° СЃРµСЂРІРµСЂР°
+    public TMP_InputField PortInput; // РџРѕР»Рµ РІРІРѕРґР° РґР»СЏ РїРѕСЂС‚Р°
 
-    // Метод для инициализации хоста
+    // РњРµС‚РѕРґ РґР»СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё С…РѕСЃС‚Р°
     public void Host()
     {
-        // Установка данных соединения (адрес и порт) из полей ввода
+        // РЈСЃС‚Р°РЅРѕРІРєР° РґР°РЅРЅС‹С… СЃРѕРµРґРёРЅРµРЅРёСЏ (Р°РґСЂРµСЃ Рё РїРѕСЂС‚) РёР· РїРѕР»РµР№ РІРІРѕРґР°
         transport.SetConnectionData(ServerInput.text, ushort.Parse(PortInput.text), null);
-        // Запуск хоста
+        // Р—Р°РїСѓСЃРє С…РѕСЃС‚Р°
         NetworkManager.Singleton.StartHost();
     }
 
-    // Метод для подключения клиента
+    // РњРµС‚РѕРґ РґР»СЏ РїРѕРґРєР»СЋС‡РµРЅРёСЏ РєР»РёРµРЅС‚Р°
     public void Client()
     {
-        // Установка данных соединения (адрес и порт) из полей ввода
+        // РЈСЃС‚Р°РЅРѕРІРєР° РґР°РЅРЅС‹С… СЃРѕРµРґРёРЅРµРЅРёСЏ (Р°РґСЂРµСЃ Рё РїРѕСЂС‚) РёР· РїРѕР»РµР№ РІРІРѕРґР°
         transport.SetConnectionData(ServerInput.text, ushort.Parse(PortInput.text), null);
-        // Запуск клиента
+        // Р—Р°РїСѓСЃРє РєР»РёРµРЅС‚Р°
         NetworkManager.Singleton.StartClient();
     }
 }

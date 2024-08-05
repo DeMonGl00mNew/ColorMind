@@ -1,32 +1,32 @@
-using Unity.Netcode; // Импорт библиотеки Unity.Netcode для работы с сетью
-using UnityEngine; // Импорт библиотеки UnityEngine для работы с Unity
+using Unity.Netcode; // РРјРїРѕСЂС‚ Р±РёР±Р»РёРѕС‚РµРєРё Unity.Netcode РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ СЃРµС‚СЊСЋ
+using UnityEngine; // РРјРїРѕСЂС‚ Р±РёР±Р»РёРѕС‚РµРєРё UnityEngine РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ Unity
 
-[RequireComponent(typeof(ServerPlayerMove))] // Требуется компонент ServerPlayerMove
-[DefaultExecutionOrder(1)] // Устанавливает порядок выполнения по умолчанию
-public class ClientPlayerMove : NetworkBehaviour // Класс для управления движением игрока на клиентской стороне
+[RequireComponent(typeof(ServerPlayerMove))] // РўСЂРµР±СѓРµС‚СЃСЏ РєРѕРјРїРѕРЅРµРЅС‚ ServerPlayerMove
+[DefaultExecutionOrder(1)] // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РїРѕСЂСЏРґРѕРє РІС‹РїРѕР»РЅРµРЅРёСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+public class ClientPlayerMove : NetworkBehaviour // РљР»Р°СЃСЃ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ РґРІРёР¶РµРЅРёРµРј РёРіСЂРѕРєР° РЅР° РєР»РёРµРЅС‚СЃРєРѕР№ СЃС‚РѕСЂРѕРЅРµ
 {
-    public float speed = 10.0F; // Скорость движения игрока
-    public float rotateSpeed = 2.5F; // Скорость поворота игрока
-    public CharacterController CharacterController; // Ссылка на CharacterController
+    public float speed = 10.0F; // РЎРєРѕСЂРѕСЃС‚СЊ РґРІРёР¶РµРЅРёСЏ РёРіСЂРѕРєР°
+    public float rotateSpeed = 2.5F; // РЎРєРѕСЂРѕСЃС‚СЊ РїРѕРІРѕСЂРѕС‚Р° РёРіСЂРѕРєР°
+    public CharacterController CharacterController; // РЎСЃС‹Р»РєР° РЅР° CharacterController
 
-    public Camera m_Camera; // Ссылка на камеру
+    public Camera m_Camera; // РЎСЃС‹Р»РєР° РЅР° РєР°РјРµСЂСѓ
 
-    private ServerPlayerMove m_Server; // Ссылка на компонент ServerPlayerMove
+    private ServerPlayerMove m_Server; // РЎСЃС‹Р»РєР° РЅР° РєРѕРјРїРѕРЅРµРЅС‚ ServerPlayerMove
 
-    private float moveRot, moveForward; // Переменные для управления движением
+    private float moveRot, moveForward; // РџРµСЂРµРјРµРЅРЅС‹Рµ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ РґРІРёР¶РµРЅРёРµРј
 
     private void Awake()
     {
-        m_Server = GetComponent<ServerPlayerMove>(); // Получаем компонент ServerPlayerMove при инициализации
+        m_Server = GetComponent<ServerPlayerMove>(); // РџРѕР»СѓС‡Р°РµРј РєРѕРјРїРѕРЅРµРЅС‚ ServerPlayerMove РїСЂРё РёРЅРёС†РёР°Р»РёР·Р°С†РёРё
     }
 
     public override void OnNetworkSpawn()
     {
-        enabled = IsClient; // Активируем компонент только для клиента
+        enabled = IsClient; // РђРєС‚РёРІРёСЂСѓРµРј РєРѕРјРїРѕРЅРµРЅС‚ С‚РѕР»СЊРєРѕ РґР»СЏ РєР»РёРµРЅС‚Р°
         if (!IsOwner)
         {
-            m_Camera.gameObject.SetActive(false); // Отключаем камеру, если игрок не владеет объектом
-            enabled = false; // Отключаем компонент
+            m_Camera.gameObject.SetActive(false); // РћС‚РєР»СЋС‡Р°РµРј РєР°РјРµСЂСѓ, РµСЃР»Рё РёРіСЂРѕРє РЅРµ РІР»Р°РґРµРµС‚ РѕР±СЉРµРєС‚РѕРј
+            enabled = false; // РћС‚РєР»СЋС‡Р°РµРј РєРѕРјРїРѕРЅРµРЅС‚
             return;
         }
     }
@@ -36,10 +36,10 @@ public class ClientPlayerMove : NetworkBehaviour // Класс для управления движени
     {
         if (IsOwner)
         {
-            CharacterController.enabled = false; // Отключаем CharacterController
-            transform.position = position; // Устанавливаем позицию объекта
-            CharacterController.enabled = true; // Включаем CharacterController
-            gameObject.SetActive(true); // Активируем объект
+            CharacterController.enabled = false; // РћС‚РєР»СЋС‡Р°РµРј CharacterController
+            transform.position = position; // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РїРѕР·РёС†РёСЋ РѕР±СЉРµРєС‚Р°
+            CharacterController.enabled = true; // Р’РєР»СЋС‡Р°РµРј CharacterController
+            gameObject.SetActive(true); // РђРєС‚РёРІРёСЂСѓРµРј РѕР±СЉРµРєС‚
         }
     }
 
@@ -47,10 +47,10 @@ public class ClientPlayerMove : NetworkBehaviour // Класс для управления движени
     {
         if (IsClient && IsOwner)
         {
-            transform.Rotate(0, Input.GetAxisRaw("Horizontal") * rotateSpeed, 0); // Поворачиваем объект
-            Vector3 forward = transform.TransformDirection(Vector3.forward); // Получаем направление движения
-            float curSpeed = speed * Input.GetAxisRaw("Vertical"); // Вычисляем скорость движения
-            CharacterController.SimpleMove(forward * curSpeed); // Применяем движение
+            transform.Rotate(0, Input.GetAxisRaw("Horizontal") * rotateSpeed, 0); // РџРѕРІРѕСЂР°С‡РёРІР°РµРј РѕР±СЉРµРєС‚
+            Vector3 forward = transform.TransformDirection(Vector3.forward); // РџРѕР»СѓС‡Р°РµРј РЅР°РїСЂР°РІР»РµРЅРёРµ РґРІРёР¶РµРЅРёСЏ
+            float curSpeed = speed * Input.GetAxisRaw("Vertical"); // Р’С‹С‡РёСЃР»СЏРµРј СЃРєРѕСЂРѕСЃС‚СЊ РґРІРёР¶РµРЅРёСЏ
+            CharacterController.SimpleMove(forward * curSpeed); // РџСЂРёРјРµРЅСЏРµРј РґРІРёР¶РµРЅРёРµ
         }
     }
 
@@ -60,18 +60,18 @@ public class ClientPlayerMove : NetworkBehaviour // Класс для управления движени
         {
             if (m_Server.ObjPickedUp.Value)
             {
-                m_Server.DropObjServerRpc(); // Вызываем метод сетевого RPC для сброса объекта
+                m_Server.DropObjServerRpc(); // Р’С‹Р·С‹РІР°РµРј РјРµС‚РѕРґ СЃРµС‚РµРІРѕРіРѕ RPC РґР»СЏ СЃР±СЂРѕСЃР° РѕР±СЉРµРєС‚Р°
             }
             else
             {
-                var hit = Physics.OverlapSphere(transform.position, 5, LayerMask.GetMask("PickupItems"), QueryTriggerInteraction.Ignore); // Проверяем коллизии в радиусе
+                var hit = Physics.OverlapSphere(transform.position, 5, LayerMask.GetMask("PickupItems"), QueryTriggerInteraction.Ignore); // РџСЂРѕРІРµСЂСЏРµРј РєРѕР»Р»РёР·РёРё РІ СЂР°РґРёСѓСЃРµ
                 if (hit.Length > 0)
                 {
-                    var ingredient = hit[0].gameObject.GetComponent<ServerColors>(); // Получаем компонент ServerColors
+                    var ingredient = hit[0].gameObject.GetComponent<ServerColors>(); // РџРѕР»СѓС‡Р°РµРј РєРѕРјРїРѕРЅРµРЅС‚ ServerColors
                     if (ingredient != null)
                     {
-                        var netObj = ingredient.NetworkObjectId; // Получаем идентификатор сетевого объекта
-                        m_Server.PickupObjServerRpc(netObj); // Вызываем метод сетевого RPC для поднятия объекта
+                        var netObj = ingredient.NetworkObjectId; // РџРѕР»СѓС‡Р°РµРј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃРµС‚РµРІРѕРіРѕ РѕР±СЉРµРєС‚Р°
+                        m_Server.PickupObjServerRpc(netObj); // Р’С‹Р·С‹РІР°РµРј РјРµС‚РѕРґ СЃРµС‚РµРІРѕРіРѕ RPC РґР»СЏ РїРѕРґРЅСЏС‚РёСЏ РѕР±СЉРµРєС‚Р°
                     }
                 }
             }

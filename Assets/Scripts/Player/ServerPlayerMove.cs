@@ -1,23 +1,23 @@
-// Импорт библиотеки Unity.Netcode для работы с сетью
+// РРјРїРѕСЂС‚ Р±РёР±Р»РёРѕС‚РµРєРё Unity.Netcode РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ СЃРµС‚СЊСЋ
 using System;
 using Unity.Netcode;
 using Unity.Netcode.Components;
-using UnityEngine; // Импорт библиотеки UnityEngine для работы с Unity
+using UnityEngine; // РРјРїРѕСЂС‚ Р±РёР±Р»РёРѕС‚РµРєРё UnityEngine РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ Unity
 
-[DefaultExecutionOrder(0)] // Устанавливает порядок выполнения по умолчанию
-public class ServerPlayerMove : NetworkBehaviour // Класс для управления движением игрока на серверной стороне
+[DefaultExecutionOrder(0)] // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РїРѕСЂСЏРґРѕРє РІС‹РїРѕР»РЅРµРЅРёСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+public class ServerPlayerMove : NetworkBehaviour // РљР»Р°СЃСЃ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ РґРІРёР¶РµРЅРёРµРј РёРіСЂРѕРєР° РЅР° СЃРµСЂРІРµСЂРЅРѕР№ СЃС‚РѕСЂРѕРЅРµ
 {
-    private NetworkObject m_PickedUpObj; // Ссылка на поднятый объект
-    private ClientPlayerMove m_Client; // Ссылка на компонент ClientPlayerMove
+    private NetworkObject m_PickedUpObj; // РЎСЃС‹Р»РєР° РЅР° РїРѕРґРЅСЏС‚С‹Р№ РѕР±СЉРµРєС‚
+    private ClientPlayerMove m_Client; // РЎСЃС‹Р»РєР° РЅР° РєРѕРјРїРѕРЅРµРЅС‚ ClientPlayerMove
 
     [SerializeField]
-    private Camera m_Camera; // Ссылка на камеру
+    private Camera m_Camera; // РЎСЃС‹Р»РєР° РЅР° РєР°РјРµСЂСѓ
 
-    public NetworkVariable<bool> ObjPickedUp = new NetworkVariable<bool>(); // Переменная для отслеживания поднятого объекта
+    public NetworkVariable<bool> ObjPickedUp = new NetworkVariable<bool>(); // РџРµСЂРµРјРµРЅРЅР°СЏ РґР»СЏ РѕС‚СЃР»РµР¶РёРІР°РЅРёСЏ РїРѕРґРЅСЏС‚РѕРіРѕ РѕР±СЉРµРєС‚Р°
 
     private void Awake()
     {
-        m_Client = GetComponent < ClientPlayerMove>(); // Получаем компонент ClientPlayerMove при инициализации
+        m_Client = GetComponent < ClientPlayerMove>(); // РџРѕР»СѓС‡Р°РµРј РєРѕРјРїРѕРЅРµРЅС‚ ClientPlayerMove РїСЂРё РёРЅРёС†РёР°Р»РёР·Р°С†РёРё
     }
 
     public override void OnNetworkSpawn()
@@ -25,26 +25,26 @@ public class ServerPlayerMove : NetworkBehaviour // Класс для управления движени
         base.OnNetworkSpawn();
         if (!IsServer)
         {
-            enabled = false; // Отключаем компонент, если это не сервер
+            enabled = false; // РћС‚РєР»СЋС‡Р°РµРј РєРѕРјРїРѕРЅРµРЅС‚, РµСЃР»Рё СЌС‚Рѕ РЅРµ СЃРµСЂРІРµСЂ
             return;
         }
 
-        var spawnPoint = ServerPlayerSpawnPoints.Instance.NextSpawnPoint(); // Получаем точку спауна для игрока
-        m_Client.SetSpawnClientRpc(spawnPoint.transform.position); // Устанавливаем позицию спауна на клиенте
+        var spawnPoint = ServerPlayerSpawnPoints.Instance.NextSpawnPoint(); // РџРѕР»СѓС‡Р°РµРј С‚РѕС‡РєСѓ СЃРїР°СѓРЅР° РґР»СЏ РёРіСЂРѕРєР°
+        m_Client.SetSpawnClientRpc(spawnPoint.transform.position); // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РїРѕР·РёС†РёСЋ СЃРїР°СѓРЅР° РЅР° РєР»РёРµРЅС‚Рµ
     }
 
     [ServerRpc]
     public void PickupObjServerRpc(ulong objToPickupID)
     {
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objToPickup); // Получаем объект для поднятия по идентификатору
-        if (objToPickup == null || objToPickup.transform.parent != null) return; // Проверяем условия для поднятия объекта
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objToPickup); // РџРѕР»СѓС‡Р°РµРј РѕР±СЉРµРєС‚ РґР»СЏ РїРѕРґРЅСЏС‚РёСЏ РїРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ
+        if (objToPickup == null || objToPickup.transform.parent != null) return; // РџСЂРѕРІРµСЂСЏРµРј СѓСЃР»РѕРІРёСЏ РґР»СЏ РїРѕРґРЅСЏС‚РёСЏ РѕР±СЉРµРєС‚Р°
 
-        objToPickup.GetComponent<Rigidbody>().isKinematic = true; // Делаем объект кинематическим
-        objToPickup.transform.parent = transform; // Устанавливаем объект как дочерний
-        objToPickup.GetComponent<NetworkTransform>().InLocalSpace = true; // Устанавливаем локальное пространство
-        objToPickup.transform.localPosition = Vector3.up; // Устанавливаем позицию объекта
-        ObjPickedUp.Value = true; // Устанавливаем флаг поднятия объекта
-        m_PickedUpObj = objToPickup; // Сохраняем ссылку на поднятый объект
+        objToPickup.GetComponent<Rigidbody>().isKinematic = true; // Р”РµР»Р°РµРј РѕР±СЉРµРєС‚ РєРёРЅРµРјР°С‚РёС‡РµСЃРєРёРј
+        objToPickup.transform.parent = transform; // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РѕР±СЉРµРєС‚ РєР°Рє РґРѕС‡РµСЂРЅРёР№
+        objToPickup.GetComponent<NetworkTransform>().InLocalSpace = true; // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј Р»РѕРєР°Р»СЊРЅРѕРµ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ
+        objToPickup.transform.localPosition = Vector3.up; // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РїРѕР·РёС†РёСЋ РѕР±СЉРµРєС‚Р°
+        ObjPickedUp.Value = true; // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„Р»Р°Рі РїРѕРґРЅСЏС‚РёСЏ РѕР±СЉРµРєС‚Р°
+        m_PickedUpObj = objToPickup; // РЎРѕС…СЂР°РЅСЏРµРј СЃСЃС‹Р»РєСѓ РЅР° РїРѕРґРЅСЏС‚С‹Р№ РѕР±СЉРµРєС‚
     }
 
     [ServerRpc]
@@ -52,13 +52,13 @@ public class ServerPlayerMove : NetworkBehaviour // Класс для управления движени
     {
         if (m_PickedUpObj != null)
         {
-            m_PickedUpObj.transform.localPosition = new Vector3(0, 0, 2); // Устанавливаем позицию для сброса объекта
-            m_PickedUpObj.transform.parent = null; // Убираем объект из родительского объекта
-            m_PickedUpObj.GetComponent<Rigidbody>().isKinematic = false; // Делаем объект не кинематическим
-            m_PickedUpObj.GetComponent<NetworkTransform>().InLocalSpace = false; // Устанавливаем глобальное пространство
-            m_PickedUpObj = null; // Сбрасываем ссылку на поднятый объект
+            m_PickedUpObj.transform.localPosition = new Vector3(0, 0, 2); // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РїРѕР·РёС†РёСЋ РґР»СЏ СЃР±СЂРѕСЃР° РѕР±СЉРµРєС‚Р°
+            m_PickedUpObj.transform.parent = null; // РЈР±РёСЂР°РµРј РѕР±СЉРµРєС‚ РёР· СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ РѕР±СЉРµРєС‚Р°
+            m_PickedUpObj.GetComponent<Rigidbody>().isKinematic = false; // Р”РµР»Р°РµРј РѕР±СЉРµРєС‚ РЅРµ РєРёРЅРµРјР°С‚РёС‡РµСЃРєРёРј
+            m_PickedUpObj.GetComponent<NetworkTransform>().InLocalSpace = false; // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РіР»РѕР±Р°Р»СЊРЅРѕРµ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ
+            m_PickedUpObj = null; // РЎР±СЂР°СЃС‹РІР°РµРј СЃСЃС‹Р»РєСѓ РЅР° РїРѕРґРЅСЏС‚С‹Р№ РѕР±СЉРµРєС‚
         }
 
-        ObjPickedUp.Value = false; // Сбрасываем флаг поднятия объекта
+        ObjPickedUp.Value = false; // РЎР±СЂР°СЃС‹РІР°РµРј С„Р»Р°Рі РїРѕРґРЅСЏС‚РёСЏ РѕР±СЉРµРєС‚Р°
     }
 }

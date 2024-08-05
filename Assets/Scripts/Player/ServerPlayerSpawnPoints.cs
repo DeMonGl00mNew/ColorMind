@@ -1,38 +1,38 @@
-// Импорт необходимых пространств имен
+// РРјРїРѕСЂС‚ РЅРµРѕР±С…РѕРґРёРјС‹С… РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІ РёРјРµРЅ
 using System.Collections.Generic;
 using UnityEngine;
 
-// Класс ServerPlayerSpawnPoints, отвечающий за точки спауна игроков на сервере
+// РљР»Р°СЃСЃ ServerPlayerSpawnPoints, РѕС‚РІРµС‡Р°СЋС‰РёР№ Р·Р° С‚РѕС‡РєРё СЃРїР°СѓРЅР° РёРіСЂРѕРєРѕРІ РЅР° СЃРµСЂРІРµСЂРµ
 public class ServerPlayerSpawnPoints : MonoBehaviour
 {
-    public List<GameObject> m_SpawnPoints; // Список точек спауна игроков
-    private static ServerPlayerSpawnPoints s_Instance; // Статический экземпляр класса
+    public List<GameObject> m_SpawnPoints; // РЎРїРёСЃРѕРє С‚РѕС‡РµРє СЃРїР°СѓРЅР° РёРіСЂРѕРєРѕРІ
+    private static ServerPlayerSpawnPoints s_Instance; // РЎС‚Р°С‚РёС‡РµСЃРєРёР№ СЌРєР·РµРјРїР»СЏСЂ РєР»Р°СЃСЃР°
 
-    // Статическое свойство Instance, возвращающее единственный экземпляр класса ServerPlayerSpawnPoints
+    // РЎС‚Р°С‚РёС‡РµСЃРєРѕРµ СЃРІРѕР№СЃС‚РІРѕ Instance, РІРѕР·РІСЂР°С‰Р°СЋС‰РµРµ РµРґРёРЅСЃС‚РІРµРЅРЅС‹Р№ СЌРєР·РµРјРїР»СЏСЂ РєР»Р°СЃСЃР° ServerPlayerSpawnPoints
     public static ServerPlayerSpawnPoints Instance
     {
         get
         {
             if (s_Instance == null)
             {
-                s_Instance = FindObjectOfType<ServerPlayerSpawnPoints>(); // Найти объект ServerPlayerSpawnPoints в сцене
+                s_Instance = FindObjectOfType<ServerPlayerSpawnPoints>(); // РќР°Р№С‚Рё РѕР±СЉРµРєС‚ ServerPlayerSpawnPoints РІ СЃС†РµРЅРµ
             }
 
             return s_Instance;
         }
     }
 
-    // Метод вызывается при уничтожении объекта
+    // РњРµС‚РѕРґ РІС‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё СѓРЅРёС‡С‚РѕР¶РµРЅРёРё РѕР±СЉРµРєС‚Р°
     private void OnDestroy()
     {
-        s_Instance = null; // Обнулить единственный экземпляр класса
+        s_Instance = null; // РћР±РЅСѓР»РёС‚СЊ РµРґРёРЅСЃС‚РІРµРЅРЅС‹Р№ СЌРєР·РµРјРїР»СЏСЂ РєР»Р°СЃСЃР°
     }
 
-    // Метод для получения следующей точки спауна из списка
+    // РњРµС‚РѕРґ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ СЃР»РµРґСѓСЋС‰РµР№ С‚РѕС‡РєРё СЃРїР°СѓРЅР° РёР· СЃРїРёСЃРєР°
     public GameObject NextSpawnPoint()
     {
-        var toReturn = m_SpawnPoints[m_SpawnPoints.Count - 1]; // Получить последнюю точку спауна
-        m_SpawnPoints.RemoveAt(m_SpawnPoints.Count - 1); // Удалить последнюю точку из списка
-        return toReturn; // Вернуть полученную точку спауна
+        var toReturn = m_SpawnPoints[m_SpawnPoints.Count - 1]; // РџРѕР»СѓС‡РёС‚СЊ РїРѕСЃР»РµРґРЅСЋСЋ С‚РѕС‡РєСѓ СЃРїР°СѓРЅР°
+        m_SpawnPoints.RemoveAt(m_SpawnPoints.Count - 1); // РЈРґР°Р»РёС‚СЊ РїРѕСЃР»РµРґРЅСЋСЋ С‚РѕС‡РєСѓ РёР· СЃРїРёСЃРєР°
+        return toReturn; // Р’РµСЂРЅСѓС‚СЊ РїРѕР»СѓС‡РµРЅРЅСѓСЋ С‚РѕС‡РєСѓ СЃРїР°СѓРЅР°
     }
 }
